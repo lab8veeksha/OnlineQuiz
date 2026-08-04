@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QuizMaster - Quiz</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            padding: 20px;
+        }
+
+
+        .quiz-box {
+
+            width: 750px;
+
+            max-width: 100%;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 25px;
+
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+
+        /* HEADER */
+
+        .header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .header h2 {
+
+            color: #667eea;
+
+            margin: 0;
+        }
+
+
+        .timer {
+
+            background: #ff4757;
+
+            color: white;
+
+            padding: 10px 18px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            font-size: 16px;
+        }
+
+
+        /* PROGRESS */
+
+        .progress-text {
+
+            color: #666;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 8px;
+
+            background: #eee;
+
+            border-radius: 10px;
+
+            margin-bottom: 30px;
+
+            overflow: hidden;
+        }
+
+
+        .progress-fill {
+
+            height: 100%;
+
+            width: 20%;
+
+            background: #667eea;
+
+            transition: 0.3s;
+        }
+
+
+        /* QUESTION */
+
+        .question {
+
+            font-size: 23px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-bottom: 25px;
+
+            line-height: 1.4;
+        }
+
+
+        /* OPTIONS */
+
+        .option {
+
+            display: block;
+
+            padding: 16px;
+
+            margin: 13px 0;
+
+            border: 2px solid #ddd;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            color: #333;
+
+            transition: 0.25s;
+        }
+
+
+        .option:hover {
+
+            border-color: #667eea;
+
+            background: #f2f3ff;
+
+            transform: translateX(4px);
+        }
+
+
+        .option input {
+
+            margin-right: 12px;
+
+            transform: scale(1.2);
+        }
+
+
+        /* BUTTONS */
+
+        .buttons {
+
+            display: flex;
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+
+        button {
+
+            border: none;
+
+            border-radius: 12px;
+
+            padding: 14px 20px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .previous-btn {
+
+            background: #ddd;
+
+            color: #333;
+
+            width: 35%;
+        }
+
+
+        .next-btn {
+
+            background: #667eea;
+
+            color: white;
+
+            width: 65%;
+        }
+
+
+        .next-btn:hover {
+
+            background: #764ba2;
+        }
+
+
+        .previous-btn:hover {
+
+            background: #bbb;
+        }
+
+
+        /* RESULT */
+
+        #result-section {
+
+            display: none;
+
+            text-align: center;
+        }
+
+
+        .result-icon {
+
+            font-size: 70px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .result-title {
+
+            color: #667eea;
+
+            font-size: 32px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .score {
+
+            font-size: 60px;
+
+            font-weight: bold;
+
+            color: #764ba2;
+
+            margin: 15px;
+        }
+
+
+        .percentage {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-bottom: 15px;
+        }
+
+
+        .message {
+
+            font-size: 18px;
+
+            color: #555;
+
+            margin-bottom: 25px;
+        }
+
+
+        .result-details {
+
+            background: #f5f5ff;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            margin-bottom: 25px;
+
+            color: #444;
+
+            line-height: 1.8;
+        }
+
+
+        .restart-btn {
+
+            background: #667eea;
+
+            color: white;
+
+            padding: 14px 30px;
+
+            margin-right: 10px;
+        }
+
+
+        .home-btn {
+
+            background: #764ba2;
+
+            color: white;
+
+            padding: 14px 30px;
+
+            text-decoration: none;
+
+            border-radius: 12px;
+
+            display: inline-block;
+        }
+
+
+        .restart-btn:hover {
+
+            background: #764ba2;
+        }
+
+
+        .home-btn:hover {
+
+            background: #667eea;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width:600px) {
+
+            .quiz-box {
+
+                padding: 22px;
+            }
+
+
+            .question {
+
+                font-size: 19px;
+            }
+
+
+            .header h2 {
+
+                font-size: 20px;
+            }
+
+
+            .buttons {
+
+                flex-direction: column;
+            }
+
+
+            .previous-btn,
+            .next-btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="quiz-box">
+
+
+    <!-- ================= QUIZ SECTION ================= -->
+
+    <div id="quiz-section">
+
+
+        <div class="header">
+
+            <h2>
+                🧠 QuizMaster
+            </h2>
+
+            <div class="timer" id="timer">
+                ⏱ 60
+            </div>
+
+        </div>
+
+
+        <!-- QUESTION NUMBER -->
+
+        <div class="progress-text" id="progress-text">
+
+            Question 1 of 5
+
+        </div>
+
+
+        <!-- PROGRESS BAR -->
+
+        <div class="progress-bar">
+
+            <div class="progress-fill" id="progress-fill"></div>
+
+        </div>
+
+
+        <!-- QUESTION -->
+
+        <div class="question" id="question">
+
+        </div>
+
+
+        <!-- OPTIONS -->
+
+        <div id="options">
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+            <button
+                class="previous-btn"
+                id="previous-btn"
+                onclick="previousQuestion()">
+
+                ← Previous
+
+            </button>
+
+
+            <button
+                class="next-btn"
+                id="next-btn"
+                onclick="nextQuestion()">
+
+                Next Question →
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= RESULT SECTION ================= -->
+
+    <div id="result-section">
+
+
+        <div class="result-icon">
+
+            🎉
+
+        </div>
+
+
+        <div class="result-title">
+
+            Quiz Completed!
+
+        </div>
+
+
+        <div class="score" id="score">
+
+            0 / 5
+
+        </div>
+
+
+        <div class="percentage" id="percentage">
+
+            0%
+
+        </div>
+
+
+        <div class="message" id="message">
+
+        </div>
+
+
+        <div class="result-details" id="result-details">
+
+        </div>
+
+
+        <button
+            class="restart-btn"
+            onclick="restartQuiz()">
+
+            🔄 Try Again
+
+        </button>
+
+
+        <a
+            href="/"
+            class="home-btn">
+
+            🏠 Back to Home
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   QUESTIONS
+===================================================== */
+
+
+const questions = [
+
+    {
+        question:
+        "Which programming language is used to create Django applications?",
+
+        options: [
+            "Java",
+            "Python",
+            "C++",
+            "PHP"
+        ],
+
+        answer: "Python"
+    },
+
+
+    {
+        question:
+        "Which HTML tag is used to create a hyperlink?",
+
+        options: [
+            "<link>",
+            "<a>",
+            "<href>",
+            "<url>"
+        ],
+
+        answer: "<a>"
+    },
+
+
+    {
+        question:
+        "Which language is mainly used for styling web pages?",
+
+        options: [
+            "Python",
+            "Java",
+            "CSS",
+            "C"
+        ],
+
+        answer: "CSS"
+    },
+
+
+    {
+        question:
+        "Which database is used by default when a new Django project is created?",
+
+        options: [
+            "MySQL",
+            "Oracle",
+            "SQLite",
+            "MongoDB"
+        ],
+
+        answer: "SQLite"
+    },
+
+
+    {
+        question:
+        "What does HTML stand for?",
+
+        options: [
+            "Hyper Text Markup Language",
+            "High Text Machine Language",
+            "Hyperlink Text Management Language",
+            "Home Tool Markup Language"
+        ],
+
+        answer: "Hyper Text Markup Language"
+    }
+
+];
+
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+
+let currentQuestion = 0;
+
+let userAnswers = new Array(questions.length).fill(null);
+
+let time = 60;
+
+let timer;
+
+
+
+/* =====================================================
+   LOAD QUESTION
+===================================================== */
+
+
+function loadQuestion() {
+
+
+    const questionData = questions[currentQuestion];
+
+
+    /* QUESTION NUMBER */
+
+    document.getElementById("progress-text").innerHTML =
+
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+
+    /* PROGRESS BAR */
+
+    let progress =
+
+        ((currentQuestion + 1) / questions.length) * 100;
+
+
+    document.getElementById("progress-fill").style.width =
+
+        progress + "%";
+
+
+
+    /* QUESTION */
+
+    document.getElementById("question").innerHTML =
+
+        questionData.question;
+
+
+
+    /* OPTIONS */
+
+    const optionsContainer =
+
+        document.getElementById("options");
+
+
+    optionsContainer.innerHTML = "";
+
+
+
+    questionData.options.forEach(function(option) {
+
+
+        const label = document.createElement("label");
+
+
+        label.className = "option";
+
+
+        label.innerHTML =
+
+            '<input type="radio" name="answer" value="' +
+
+            option +
+
+            '">' +
+
+            option;
+
+
+        optionsContainer.appendChild(label);
+
+
+    });
+
+
+
+    /* RESTORE PREVIOUS ANSWER */
+
+    if (userAnswers[currentQuestion] !== null) {
+
+
+        const selected =
+
+            document.querySelector(
+
+                'input[name="answer"][value="' +
+
+                userAnswers[currentQuestion] +
+
+                '"]'
+
+            );
+
+
+        if (selected) {
+
+            selected.checked = true;
+
+        }
+
+    }
+
+
+
+    /* PREVIOUS BUTTON */
+
+    if (currentQuestion === 0) {
+
+        document.getElementById("previous-btn").style.display = "none";
+
+    }
+
+    else {
+
+        document.getElementById("previous-btn").style.display = "block";
+
+    }
+
+
+
+    /* LAST QUESTION BUTTON */
+
+    if (currentQuestion === questions.length - 1) {
+
+        document.getElementById("next-btn").innerHTML =
+
+            "🏆 Submit Quiz";
+
+    }
+
+    else {
+
+        document.getElementById("next-btn").innerHTML =
+
+            "Next Question →";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   NEXT QUESTION
+===================================================== */
+
+
+function nextQuestion() {
+
+
+    const selected =
+
+        document.querySelector(
+
+            'input[name="answer"]:checked'
+
+        );
+
+
+
+    if (!selected) {
+
+        alert("⚠️ Please select an answer!");
+
+        return;
+
+    }
+
+
+
+    /* SAVE ANSWER */
+
+    userAnswers[currentQuestion] = selected.value;
+
+
+
+    /* IF LAST QUESTION */
+
+    if (currentQuestion === questions.length - 1) {
+
+        finishQuiz();
+
+        return;
+
+    }
+
+
+
+    currentQuestion++;
+
+
+    loadQuestion();
+
+}
+
+
+
+/* =====================================================
+   PREVIOUS QUESTION
+===================================================== */
+
+
+function previousQuestion() {
+
+
+    /* SAVE CURRENT ANSWER IF SELECTED */
+
+    const selected =
+
+        document.querySelector(
+
+            'input[name="answer"]:checked'
+
+        );
+
+
+    if (selected) {
+
+        userAnswers[currentQuestion] = selected.value;
+
+    }
+
+
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        loadQuestion();
+
+    }
+
+}
+
+
+
+/* =====================================================
+   FINISH QUIZ
+===================================================== */
+
+
+function finishQuiz() {
+
+
+    clearInterval(timer);
+
+
+
+    let score = 0;
+
+    let attempted = 0;
+
+
+
+    /* CALCULATE SCORE */
+
+    for (let i = 0; i < questions.length; i++) {
+
+
+        if (userAnswers[i] !== null) {
+
+            attempted++;
+
+        }
+
+
+        if (
+
+            userAnswers[i] ===
+
+            questions[i].answer
+
+        ) {
+
+            score++;
+
+        }
+
+    }
+
+
+
+    /* PERCENTAGE */
+
+    let percentage =
+
+        (score / questions.length) * 100;
+
+
+
+    /* HIDE QUIZ */
+
+    document.getElementById("quiz-section").style.display =
+
+        "none";
+
+
+
+    /* SHOW RESULT */
+
+    document.getElementById("result-section").style.display =
+
+        "block";
+
+
+
+    /* SCORE */
+
+    document.getElementById("score").innerHTML =
+
+        score + " / " + questions.length;
+
+
+
+    /* PERCENTAGE */
+
+    document.getElementById("percentage").innerHTML =
+
+        percentage + "%";
+
+
+
+    /* MESSAGE */
+
+    let message = "";
+
+
+
+    if (percentage === 100) {
+
+        message =
+
+            "🏆 Outstanding! You got every question correct!";
+
+    }
+
+    else if (percentage >= 80) {
+
+        message =
+
+            "🌟 Excellent performance! Keep it up!";
+
+    }
+
+    else if (percentage >= 60) {
+
+        message =
+
+            "👍 Good job! You can improve even more.";
+
+    }
+
+    else if (percentage >= 40) {
+
+        message =
+
+            "🙂 Fair attempt! Practice more and try again.";
+
+    }
+
+    else {
+
+        message =
+
+            "📚 Keep learning and give it another try!";
+
+    }
+
+
+
+    document.getElementById("message").innerHTML =
+
+        message;
+
+
+
+    /* RESULT DETAILS */
+
+    document.getElementById("result-details").innerHTML =
+
+        "📝 Questions Attended: <b>" +
+
+        attempted +
+
+        " / " +
+
+        questions.length +
+
+        "</b><br>" +
+
+        "✅ Correct Answers: <b>" +
+
+        score +
+
+        "</b><br>" +
+
+        "❌ Wrong Answers: <b>" +
+
+        (attempted - score) +
+
+        "</b><br>" +
+
+        "⏭️ Not Attempted: <b>" +
+
+        (questions.length - attempted) +
+
+        "</b><br>" +
+
+        "🎯 Marks Obtained: <b>" +
+
+        score +
+
+        " / " +
+
+        questions.length +
+
+        "</b>";
+
+}
+
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+
+function startTimer() {
+
+
+    timer = setInterval(function() {
+
+
+        time--;
+
+
+        document.getElementById("timer").innerHTML =
+
+            "⏱ " + time;
+
+
+
+        /* CHANGE TIMER WARNING */
+
+        if (time <= 10) {
+
+            document.getElementById("timer").style.background =
+
+                "#c0392b";
+
+        }
+
+
+
+        /* TIME UP */
+
+        if (time <= 0) {
+
+
+            clearInterval(timer);
+
+
+            alert("⏰ Time's up! Your quiz will be submitted.");
+
+
+            finishQuiz();
+
+        }
+
+
+    }, 1000);
+
+}
+
+
+
+/* =====================================================
+   RESTART QUIZ
+===================================================== */
+
+
+function restartQuiz() {
+
+
+    currentQuestion = 0;
+
+
+    userAnswers =
+
+        new Array(questions.length).fill(null);
+
+
+    time = 60;
+
+
+
+    document.getElementById("quiz-section").style.display =
+
+        "block";
+
+
+    document.getElementById("result-section").style.display =
+
+        "none";
+
+
+
+    document.getElementById("timer").style.background =
+
+        "#ff4757";
+
+
+
+    loadQuestion();
+
+
+    clearInterval(timer);
+
+
+    startTimer();
+
+}
+
+
+
+/* =====================================================
+   START QUIZ
+===================================================== */
+
+
+loadQuestion();
+
+startTimer();
+
+
+</script>
+
+
+</body>
+
+</html>
